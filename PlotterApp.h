@@ -133,4 +133,80 @@ private:
     ResizeMode m_resizeMode = ResizeMode::None;
 };
 
+class CustomDialog : public QDialog
+{
+    Q_OBJECT
+public:
+    explicit CustomDialog(QWidget *parent = nullptr)
+        : QDialog(parent)
+    {
+        setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
+        setAttribute(Qt::WA_TranslucentBackground);
+    }
+
+protected:
+    void paintEvent(QPaintEvent *event) override {
+        Q_UNUSED(event);
+
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
+
+        // Clear the entire dialog (fully transparent)
+        painter.setCompositionMode(QPainter::CompositionMode_Clear);
+        painter.fillRect(rect(), Qt::transparent);
+
+        // Switch back to normal composition
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+        // Draw a rounded rectangle for the entire dialog
+        int radius = 15; // The corner radius
+        QPainterPath path;
+        path.addRoundedRect(rect(), radius, radius);
+
+        // Fill with a background color that matches the main window
+        painter.setBrush(QColor(45, 45, 48));
+        painter.setPen(Qt::NoPen);
+
+        painter.drawPath(path);
+    }
+};
+
+class DialogMoveFilter : public QObject {
+public:
+    DialogMoveFilter(QDialog *dialog, QWidget *titleBar)
+        : QObject(titleBar), m_dialog(dialog), m_titleBar(titleBar), m_dragging(false) {}
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override {
+        if (obj == m_titleBar) {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+
+            if (event->type() == QEvent::MouseButtonPress) {
+                if (mouseEvent->button() == Qt::LeftButton) {
+                    m_dragging = true;
+                    m_dragPosition = mouseEvent->globalPosition().toPoint() - m_dialog->frameGeometry().topLeft();
+                    return true;
+                }
+            }
+            else if (event->type() == QEvent::MouseMove) {
+                if (m_dragging) {
+                    m_dialog->move(mouseEvent->globalPosition().toPoint() - m_dragPosition);
+                    return true;
+                }
+            }
+            else if (event->type() == QEvent::MouseButtonRelease) {
+                m_dragging = false;
+                return true;
+            }
+        }
+        return QObject::eventFilter(obj, event);
+    }
+
+private:
+    QDialog *m_dialog;
+    QWidget *m_titleBar;
+    bool m_dragging;
+    QPoint m_dragPosition;
+};
+
 #endif

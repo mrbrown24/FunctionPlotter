@@ -921,23 +921,66 @@ void PlotterMainWindow::onEquationDoubleClicked(QListWidgetItem *item)
         // Get current equation
         EquationPlot &plot = plots[row];
 
-        // Create a dialog for editing
-        QDialog dialog(this);
-        dialog.setWindowTitle("Edit Equation");
+        // Create a custom dialog for editing
+        CustomDialog dialog(this);
 
         QVBoxLayout *layout = new QVBoxLayout(&dialog);
+        layout->setContentsMargins(15, 15, 15, 15); // Add padding inside dialog
+
+        // Create a custom title bar
+        QWidget *titleBar = new QWidget(&dialog);
+        QHBoxLayout *titleBarLayout = new QHBoxLayout(titleBar);
+        titleBarLayout->setContentsMargins(0, 0, 0, 5);
+
+        QLabel *titleLabel = new QLabel("Edit Equation", titleBar);
+        titleLabel->setStyleSheet("color: white; font-weight: bold; font-size: 14px;");
+
+        QPushButton *closeButton = new QPushButton("×", titleBar);
+        closeButton->setFixedSize(25, 25);
+        closeButton->setStyleSheet(R"(
+            QPushButton {
+                color: white;
+                background-color: transparent;
+                border: none;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #e81123;
+                border-radius: 12px;
+            }
+        )");
+        connect(closeButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+
+        titleBarLayout->addWidget(titleLabel);
+        titleBarLayout->addStretch();
+        titleBarLayout->addWidget(closeButton);
+
+        layout->addWidget(titleBar);
+
+        // Add a line separator
+        QFrame *line = new QFrame(&dialog);
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
+        line->setStyleSheet("background-color: #444444;");
+        layout->addWidget(line);
+        layout->addSpacing(5);
 
         // Name field
         QLabel *nameLabel = new QLabel("Equation Name:", &dialog);
+        nameLabel->setStyleSheet("color: white;");
         QLineEdit *nameEdit = new QLineEdit(plot.name, &dialog);
         layout->addWidget(nameLabel);
         layout->addWidget(nameEdit);
+        layout->addSpacing(10);
 
         // Equation field
         QLabel *equationLabel = new QLabel("Equation:", &dialog);
+        equationLabel->setStyleSheet("color: white;");
         QLineEdit *equationEdit = new QLineEdit(plot.equation, &dialog);
         layout->addWidget(equationLabel);
         layout->addWidget(equationEdit);
+        layout->addSpacing(15);
 
         // Buttons
         QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -945,13 +988,57 @@ void PlotterMainWindow::onEquationDoubleClicked(QListWidgetItem *item)
         QPushButton *saveButton = new QPushButton("Save", &dialog);
         saveButton->setDefault(true);
 
+        // Style buttons
+        QString buttonStyle = R"(
+            QPushButton {
+                background-color: #444444;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 15px;
+                min-width: 80px;
+            }
+            QPushButton:hover {
+                background-color: #555555;
+            }
+            QPushButton:pressed {
+                background-color: #333333;
+            }
+        )";
+
+        cancelButton->setStyleSheet(buttonStyle);
+        saveButton->setStyleSheet(buttonStyle);
+
+        buttonLayout->addStretch();
         buttonLayout->addWidget(cancelButton);
         buttonLayout->addWidget(saveButton);
         layout->addLayout(buttonLayout);
 
+        // Overall dialog styling for child widgets
+        dialog.setStyleSheet(R"(
+            QLineEdit {
+                background-color: #1e1e1e;
+                color: white;
+                border: 1px solid #444444;
+                border-radius: 4px;
+                padding: 5px;
+                selection-background-color: #3a7ca8;
+            }
+        )");
+
         // Connect buttons
         connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
         connect(saveButton, &QPushButton::clicked, &dialog, &QDialog::accept);
+
+        // Add drag support for the title bar
+        titleBar->installEventFilter(new DialogMoveFilter(&dialog, titleBar));
+
+        // Make dialog a reasonable size
+        dialog.resize(350, 250);
+
+        // Center dialog over parent
+        QRect parentGeometry = geometry();
+        dialog.move(parentGeometry.center() - dialog.rect().center());
 
         // Show dialog and process result
         if (dialog.exec() == QDialog::Accepted) {
@@ -1008,3 +1095,4 @@ void PlotterMainWindow::onSavePlotAsImageClicked()
         }
     }
 }
+
