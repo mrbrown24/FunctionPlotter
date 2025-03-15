@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-caba618d7d0f86927153.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "FunctionPlotter",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "FunctionPlotter::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-FunctionPlotter-Debug-035bae4d687093f2b40f.json",
+					"name" : "FunctionPlotter",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "FunctionPlotter_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-FunctionPlotter_autogen-Debug-82f3cf38b486dd8c7aca.json",
+					"name" : "FunctionPlotter_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "FunctionPlotter_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-FunctionPlotter_autogen_timestamp_deps-Debug-720e48ce1ac8c587d5a9.json",
+					"name" : "FunctionPlotter_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "FunctionPlotter_qmlimportscan::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-FunctionPlotter_qmlimportscan-Debug-d08f73bc0f84e26ec88f.json",
+					"name" : "FunctionPlotter_qmlimportscan",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/PlotterApp/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug",
+		"source" : "E:/PlotterApp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
