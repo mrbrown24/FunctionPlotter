@@ -27,7 +27,7 @@ A simple Qt-based application for plotting mathematical functions with a customi
 
 ## Usage
 
-1. Enter an equation in the "Equation" field using 'x' as the variable (e.g., 2*x^2 + 3*sin(x))
+1. Enter an equation in the "Equation" field using 'x' as the variable (e.g., 2\*x^2 + 3\*sin(x))
 2. Enter a name for your equation
 3. Click "Add Equation"
 4. Adjust the plot range if needed
