@@ -1,6 +1,6 @@
 # Function Plotter
 
-A simple Qt-based application for plotting mathematical functions with a customizable interface and smooth rounded corners.
+A simple Qt-based application for plotting mathematical functions with a customized/customizable interface.
 
 ![Function Plotter Screenshot](screenshots/main_window.png)
 
@@ -22,7 +22,7 @@ A simple Qt-based application for plotting mathematical functions with a customi
 
 ### Building from Source
 1. Clone this repository
-2. Open `FunctionPlotter.pro` in Qt Creator
+2. Open `CMakeLists` in Qt Creator
 3. Build and run the project
 
 ## Usage
